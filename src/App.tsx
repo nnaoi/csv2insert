@@ -1,24 +1,46 @@
+import { Box, Button, Card, CardActions, CardContent, Checkbox, Fab, FormControlLabel, FormGroup, Switch, TextField } from '@material-ui/core';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Card>
+        <CardContent>
+          <TextField
+            label="csv"
+            multiline
+            rows={4}
+            rowsMax={10}
+            defaultValue="Default Value"
+            variant="filled"
+            fullWidth
+          />
+          <Box m={1} textAlign="center">
+              <Button color="primary" variant="contained">
+                <KeyboardArrowDownIcon fontSize="large" />
+              </Button>
+              <FormControlLabel
+                control={<Switch />}
+                label="クリップボードにコピー"
+                style={{ marginLeft: "4px" }}
+              />
+          </Box>
+          <TextField
+            label="INSERT"
+            multiline
+            rows={4}
+            rowsMax={10}
+            defaultValue="Default Value"
+            variant="filled"
+            fullWidth
+          />
+        </CardContent>
+        <CardActions>
+          
+          <Checkbox />
+        </CardActions>
+      </Card>
     </div>
   );
 }
