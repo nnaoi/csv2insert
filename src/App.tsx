@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardActions, CardContent, Checkbox, Fab, FormControlLabel, FormGroup, Switch, TextField } from '@material-ui/core';
+import { Box, Button, Card, CardContent, FormControlLabel, Switch, TextField } from '@material-ui/core';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import React, { useState } from 'react';
 
@@ -9,6 +9,32 @@ function App() {
 
   const csvToInert = () => {
     const textWithExtraTabsRemoved = csvText.replace(/\t+?\r?\n/g, '\r\n');
+    const rows = textWithExtraTabsRemoved
+      .split('\r\n')
+      .map(r => r.split('\t'));
+    let tableName: string;
+    let tableNameIndex = 0;
+    let columns: string[];
+    let columnsIndex = 1;
+    let insertText = "";
+    rows.forEach((r, i) => {
+      if (i === tableNameIndex) {
+        tableName = r[0];
+        columnsIndex = i + 1;
+      } else if (i === columnsIndex) {
+        columns = r;
+      } else if (r.length === 1 && !r[0]) {
+        insertText += "GO\r\n\r\n";
+        tableNameIndex = i + 1;
+      } else {
+        const rowWithQuotes = r
+          .map(t => t === 'NULL' ? 'NULL' : `'${t}'`);
+        insertText += `INSERT INTO ${tableName}(${columns.join(', ')}) VALUES (${rowWithQuotes.join(',')});\r\n`;
+      }
+    });
+  
+    insertText += 'GO'
+    setInsertText(insertText);
   };
 
   return (
@@ -20,11 +46,10 @@ function App() {
             multiline
             rows={4}
             rowsMax={10}
-            defaultValue="Default Value"
             variant="filled"
             fullWidth
             value={csvText}
-            onBlur={(e: React.FocusEvent<HTMLInputElement>) => setCsvText(e.target.value) }
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCsvText(e.target.value) }
           />
           <Box m={1} textAlign="center">
               <Button color="primary" 
@@ -49,7 +74,7 @@ function App() {
             multiline
             rows={4}
             rowsMax={10}
-            defaultValue="Default Value"
+            value={insertText}
             variant="filled"
             fullWidth
           />
