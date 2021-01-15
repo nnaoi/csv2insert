@@ -21,6 +21,7 @@ function App() {
       if (i === tableNameIndex) {
         tableName = r[0];
         columnsIndex = i + 1;
+        insertText += `-- ${tableName}\r\n`;
       } else if (i === columnsIndex) {
         columns = r;
       } else if (r.length === 1 && !r[0]) {
