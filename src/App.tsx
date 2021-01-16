@@ -55,7 +55,7 @@ function App() {
       const tableName = table.match(regex)
         ?.find(tn => tn)
         ?.replace(/\r?\n/, '');
-      table = table.replace(regex, '').replace(/\r?\n\t*?$/, '');
+      table = table.replace(regex, '').replace(/\s*?$/g, '');
       sqlStateMent += `-- ${tableName}\n`;
 
       const result = readString(table, { header: true }) as 
