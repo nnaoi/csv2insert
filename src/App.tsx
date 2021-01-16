@@ -14,10 +14,36 @@ import { useSnackbar } from 'material-ui-snackbar-provider'
 import { readString } from 'react-papaparse';
 import PapaParse from 'papaparse';
 
+const CsvDefaultValue = `Users			
+Id	Name		
+11111	Mike		
+22222	Susan		
+33333	Bob		
+			
+MailAddresses			
+Id	UserId	MailAddress	
+11111	11111	mike@example.com	
+22222	22222	susan@example.com	
+33333	33333	bob@example.com	
+      `;
+const InsertDefaultValue = `-- Users
+INSERT INTO Users(Id, Name) VALUES ('11111', 'Mike');
+INSERT INTO Users(Id, Name) VALUES ('22222', 'Susan');
+INSERT INTO Users(Id, Name) VALUES ('33333', 'Bob');
+GO
+
+-- MailAddresses
+INSERT INTO MailAddresses(Id, UserId, MailAddress) VALUES ('11111', '11111', 'mike@example.com');
+INSERT INTO MailAddresses(Id, UserId, MailAddress) VALUES ('22222', '22222', 'susan@example.com');
+INSERT INTO MailAddresses(Id, UserId, MailAddress) VALUES ('33333', '33333', 'bob@example.com');
+GO
+
+`;
+      
 function App() {
   const snackbar = useSnackbar();
-  const [csvText, setCsvText] = useState('');
-  const [insertText, setInsertText] = useState('');
+  const [csvText, setCsvText] = useState(CsvDefaultValue);
+  const [insertText, setInsertText] = useState(InsertDefaultValue);
   const [isCopyChecked, setCopyChecked] = useState(true);
 
   const csvToInsert = () => {
