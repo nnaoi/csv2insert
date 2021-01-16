@@ -10,15 +10,17 @@ import {
   TextField 
 } from '@material-ui/core';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import { useSnackbar } from 'material-ui-snackbar-provider'
 import { readString } from 'react-papaparse';
 import PapaParse from 'papaparse';
 
 function App() {
+  const snackbar = useSnackbar();
   const [csvText, setCsvText] = useState('');
   const [insertText, setInsertText] = useState('');
   const [isCopyChecked, setCopyChecked] = useState(true);
 
-  const csvToInert = () => {
+  const csvToInsert = () => {
     const tables = csvText.replace(/\t+?\r?\n/g, '\n')
       .split(/^\r?\n/m);
     let sqlStateMent = '';
@@ -43,6 +45,10 @@ function App() {
     });
 
     setInsertText(sqlStateMent);
+    if (isCopyChecked && navigator.clipboard) {
+      navigator.clipboard.writeText(sqlStateMent);
+      snackbar.showMessage('コピーしました。');
+    }
   };
 
   return (
@@ -62,7 +68,7 @@ function App() {
           <Box m={1} textAlign="center">
               <Button color="primary" 
                 variant="contained"
-                onClick={() => csvToInert()}
+                onClick={() => csvToInsert()}
               >
                 <KeyboardArrowDownIcon fontSize="large" />
               </Button>

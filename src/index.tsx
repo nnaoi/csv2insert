@@ -1,11 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import { SnackbarProvider } from 'material-ui-snackbar-provider';
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <SnackbarProvider SnackbarProps={{ autoHideDuration: 5000 }}>
+      <App />
+    </SnackbarProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
