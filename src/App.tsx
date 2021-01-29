@@ -47,16 +47,16 @@ function App() {
   const [isCopyChecked, setCopyChecked] = useState(true);
 
   const csvToInsert = () => {
-    const tables = csvText.replace(/\t+?\r\n/g, '\r\n')
-      .split(/^\r\n/m);
+    const tables = csvText.replace(/\t+?\r?\n/g, '\n')
+      .split(/^\r?\n/m);
     let sqlStateMent = '';
     tables.forEach(table => {
-      const regex = /^.+?\r\n/;
+      const regex = /^.+?\r?\n/;
       const tableName = table.match(regex)
         ?.find(tn => tn)
-        ?.replace(/\r\n/, '');
+        ?.replace(/\r?\n/, '');
       table = table.replace(regex, '').replace(/\s*?$/g, '');
-      sqlStateMent += `-- ${tableName}\r\n`;
+      sqlStateMent += `-- ${tableName}\n`;
 
       const result = readString(table, { header: true }) as 
         PapaParse.ParseResult<{[column: string]: string}>;
@@ -64,10 +64,10 @@ function App() {
         const columns = Object.keys(row);
         const values = Object.values(row)
           .map(v => v === 'NULL' ? 'NULL' : `'${v}'`)
-          sqlStateMent += `INSERT INTO ${tableName}(${columns.join(', ')}) VALUES (${values.join(', ')});\r\n`;
+          sqlStateMent += `INSERT INTO ${tableName}(${columns.join(', ')}) VALUES (${values.join(', ')});\n`;
       });
 
-      sqlStateMent += 'GO\r\n\r\n';
+      sqlStateMent += 'GO\n\n';
     });
 
     setInsertText(sqlStateMent);
